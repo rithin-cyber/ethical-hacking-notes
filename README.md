@@ -10,7 +10,8 @@ month-6/
     ├── day-1.md
     ├── day-2.md
     ├── day-3.md
-    └── day-4.md
+    ├── day-4.md
+    └── day-5.md
 ```
 
 ## Topics Covered
@@ -19,8 +20,12 @@ month-6/
 - HTTP Requests and Responses
 - HTTP Headers
 - GET vs POST
+- HTTP Response Structure
+- HTTP Status Codes
 - Browser Developer Tools
 - Burp Suite Fundamentals
+- Burp Repeater
+- HTTP Response Headers
 
 ## Goal
 
