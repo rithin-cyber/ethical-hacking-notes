@@ -30,3 +30,7 @@ month-6/
 ## Goal
 
 Build a strong foundation in web application security through hands-on practice, labs, and documentation.
+
+## Week 2
+
+Authentication Workflow
