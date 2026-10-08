@@ -1,0 +1,31 @@
+# Finding: Linux Privilege Escalation via [Vector]
+
+## Severity
+High / Critical
+
+## Initial Access
+Low-privileged account
+
+## Escalation Vector
+[Vector found]
+
+## Description
+The system contains a misconfiguration that allows a low-privileged user to escalate privileges.
+
+## Technical Details
+[Explain the specific misconfiguration and why it allows privilege escalation.]
+
+## Evidence
+[Command/output showing the vulnerability and root access]
+
+## Reproduction Steps
+1. Log in as the low-privileged user.
+2. Identify the vulnerable configuration.
+3. Exploit the misconfiguration.
+4. Verify root access with `whoami` or `id`.
+
+## Impact
+An attacker can escalate from a low-privileged account to root and gain full control of the system.
+
+## Remediation
+Remove the misconfiguration and restrict the affected permissions or configuration to prevent unauthorized privilege escalation.
