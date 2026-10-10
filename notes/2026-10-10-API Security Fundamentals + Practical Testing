@@ -1,0 +1,58 @@
+# Finding: Broken Access Control in User-Deletion API
+
+## Severity
+High — provisional lab assessment. Severity in a real application depends on the affected users, business impact, and access restrictions.
+
+## Affected Endpoints
+- **API documentation:** `GET /api/`
+- **Vulnerable operation:** `DELETE /api/user/{username}`
+- **Tested target:** `DELETE /api/user/carlos`
+
+## Description
+The application exposes interactive API documentation that reveals available API operations, including a user-deletion function.
+
+While authenticated as the ordinary user `wiener`, I was able to discover and invoke the documented deletion operation against another user's account, `carlos`. The application did not adequately enforce authorization to prevent this action.
+
+## Discovery
+1. Logged in using the lab-provided account `wiener`.
+2. Updated the account email and captured the resulting `PATCH /api/user/wiener` request in Burp Suite.
+3. Sent the request to Burp Repeater and examined the endpoint.
+4. Removed the username from the path and observed an error indicating that an identifier was required.
+5. Investigated the parent API path and discovered the API documentation.
+6. Opened the documentation in the browser and identified the user-deletion operation.
+
+## Validation Evidence
+**Authenticated account:** `wiener`
+
+**Operation:** `DELETE /api/user/carlos`
+
+**Expected security behavior:** An ordinary user should not be allowed to delete another user's account unless explicitly authorized by the application's access-control policy.
+
+**Observed behavior:** The lab allowed the user-deletion operation to be performed against `carlos`.
+
+**Evidence to retain:** The actual DELETE request, the response confirming the result, and the lab's success indicator.
+
+For the standard PortSwigger lab, successful execution returns a response indicating that the user was deleted. Include the exact status code and response body from your own request.
+
+## Impact
+An attacker with an ordinary authenticated account could potentially delete another user's account without authorization. In a real application, this could cause account loss, service disruption, or loss of access to associated data.
+
+## Remediation
+- Enforce server-side authorization checks on every user-deletion request.
+- Verify that the authenticated user has permission to delete the specified account.
+- Restrict account-deletion functionality to the account owner or an appropriately authorized administrator, according to business requirements.
+- Apply authorization checks to every relevant API operation rather than relying on the frontend interface.
+- Log and monitor unauthorized attempts to perform destructive operations.
+
+API documentation should also be reviewed to ensure that operational details are exposed appropriately. However, documentation being accessible is not, by itself, proof of an authorization vulnerability.
+
+## Retest
+1. Authenticate as an ordinary user.
+2. Attempt to delete another user's account using the same endpoint.
+3. Confirm that the server rejects the unauthorized operation.
+4. Verify that the target account still exists and remains unchanged.
+5. Confirm that appropriately authorized administrators can still perform permitted administrative actions.
+
+## References
+- PortSwigger Web Security Academy — Exploiting an API Endpoint Using Documentation
+  https://portswigger.net/web-security/api-testing/lab-exploiting-api-endpoint-using-documentation
