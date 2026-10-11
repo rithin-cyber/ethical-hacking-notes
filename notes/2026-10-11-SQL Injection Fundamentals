@@ -1,0 +1,40 @@
+# SQL Injection in Product Category Filter
+
+## 1. Summary
+The product category filter was vulnerable to SQL injection. By modifying the `category` parameter, I was able to retrieve additional product results beyond those returned by the normal category filter.
+
+## 2. Affected Endpoint
+- **Path:** `/filter`
+- **Parameter:** `category`
+- **Method:** `GET`
+
+## 3. Steps to Reproduce
+1. Open the product listing in the authorized PortSwigger lab.
+2. Select a product category and capture the request in Burp Suite.
+3. Send the request to Repeater.
+4. Modify the `category` parameter using the following test input:
+
+   `Gifts' OR 1=1--`
+
+5. Send the modified request.
+6. Compare the response with the original request and observe the additional products.
+7. Confirm the lab completion message.
+
+## 4. Evidence
+The original request used `category=Gifts`. After modifying the parameter, the response contained additional product results. The PortSwigger lab displayed its success message.
+
+## 5. Security Impact
+An attacker may be able to retrieve product data that the application intended to exclude from the normal category results. The impact on a real application would depend on the sensitivity of the exposed data and the extent of the SQL injection.
+
+## 6. Root Cause
+The application may be incorporating user-controlled input into an SQL query without safely separating data from SQL instructions.
+
+## 7. Remediation
+- Use parameterized queries or prepared statements.
+- Avoid constructing SQL queries through unsafe string concatenation.
+- Validate input according to the expected parameter format.
+- Apply least-privilege permissions to the database account.
+- Retest after remediation to verify that the input can no longer alter the query's intended logic.
+
+## 8. Severity
+To be determined from the real application's data sensitivity, exploitability, and business impact. Do not assign a definitive severity based only on the training lab.
