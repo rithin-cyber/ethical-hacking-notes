@@ -1,0 +1,42 @@
+# Username Enumeration via Different Login Responses
+
+## 1. Summary
+The login functionality revealed differences in responses for valid and invalid usernames. This behavior allowed username enumeration in the authorized PortSwigger training lab.
+
+## 2. Affected Endpoint
+- **Method:** POST
+- **Path:** `/login` (verify against your captured request)
+- **Parameter:** `username`
+
+## 3. Steps to Reproduce
+1. Open the login page in the authorized lab.
+2. Capture a login request using Burp Suite Proxy.
+3. Send the request to Burp Intruder.
+4. Configure the attack to test candidate usernames while keeping the password unchanged.
+5. Compare response lengths and inspect response content and error messages.
+6. Identify the username that produced a distinct response.
+7. Test the identified username using the lab's permitted password list.
+8. Confirm the lab's successful login and completion message.
+
+## 4. Evidence
+During testing, response lengths differed for candidate usernames. The response content helped identify a likely valid username. Login with the discovered lab credentials succeeded, and the lab displayed its completion message.
+
+Attach sanitized request and response evidence from Burp Suite. Do not include session cookies or disclose passwords in the report.
+
+## 5. Security Impact
+An attacker may be able to distinguish valid accounts from invalid ones. This information can make targeted password attacks easier. The demonstrated impact should be limited to the behavior confirmed in the lab.
+
+## 6. Root Cause
+The application returned distinguishable responses depending on whether a username existed.
+
+## 7. Remediation
+- Use generic authentication error messages that do not reveal whether the username or password was incorrect.
+- Apply suitable rate limiting and monitoring to login attempts.
+- Use strong password storage and encourage multi-factor authentication.
+- Ensure account protections do not unnecessarily enable denial of service against legitimate users.
+
+## 8. Severity
+Determine severity based on the information exposed, exploitability, and the application's wider security controls. Do not assign a definitive severity solely from this training lab.
+
+## 9. Validation
+Retest with valid and invalid usernames after remediation to verify that responses no longer reveal account existence through distinguishable messages or behavior.
