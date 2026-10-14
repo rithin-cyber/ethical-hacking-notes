@@ -1,0 +1,9 @@
+# Session Invalidation After Logout
+
+**Test:** Replayed the previously authenticated `GET /my-account` request in Burp Suite Repeater after logging out.
+
+**Evidence:** The server returned `HTTP/2 302 Found` with `Location: /login`.
+
+**Result:** The old session did not retain authenticated access to `/my-account` in this test.
+
+**Limitation:** This test covers only the specific session and endpoint tested. It does not establish that all session-management controls are secure, including session ID rotation after login, session expiration, and invalidation across other authenticated endpoints.
